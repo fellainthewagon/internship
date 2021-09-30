@@ -1,0 +1,33 @@
+version: "3.8"
+services:
+  mongodb:
+    image: mongo:5.0
+    container_name: mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_DATABASE: file-transfering
+    ports:
+      - 27017:27017
+    networks:
+      - file-transfering
+    volumes:
+      - db:/data/db
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: api
+    restart: unless-stopped
+    volumes:
+      - .:/app
+    ports:
+      - "5000:5000"
+    networks:
+      - file-transfering
+    depends_on:
+      - mongodb
+volumes:
+  db:
+networks:
+  file-transfering:
+    driver: bridge
