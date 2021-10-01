@@ -1,9 +1,10 @@
 const multer = require("multer");
 const { randomUUID } = require("crypto");
+const { uploadsFolder } = require("../config");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "./uploads");
+    cb(null, `./${uploadsFolder}`);
   },
   filename: (req, file, cb) => {
     const arr = file.originalname.split(".");

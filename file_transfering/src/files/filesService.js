@@ -1,12 +1,15 @@
 const File = require("../models/File");
+const { promises: fs } = require("fs");
+const NotFoundError = require("../errors/notFoundError");
+const path = require("path");
+const { uploadsFolder } = require("../config");
 
 module.exports = class FilesService {
   async getAll() {
-    try {
-      return File.find({});
-    } catch (error) {
-      throw new Error(error);
-    }
+    const files = await File.find({});
+    if (!files.length) throw new NotFoundError();
+
+    return files;
   }
 
   async create(file) {
@@ -24,27 +27,20 @@ module.exports = class FilesService {
     }
   }
 
-  async getOne(id) {
-    try {
-      return File.findOne({ _id: id });
-    } catch (error) {
-      throw new Error(error);
-    }
-  }
-
   async deleteOne(id) {
-    try {
-      return File.deleteOne({ _id: id });
-    } catch (error) {
-      throw new Error(error);
-    }
+    const file = await File.findByIdAndDelete({ _id: id });
+    if (!file) throw new NotFoundError();
+
+    await fs.unlink(file.path);
   }
 
   async deleteAll() {
-    try {
-      await File.deleteMany({});
-    } catch (error) {
-      throw new Error(error);
-    }
+    const file = await File.deleteMany({});
+    if (!file.deletedCount) throw new NotFoundError();
+
+    const files = await fs.readdir(uploadsFolder);
+    await Promise.all(
+      files.map((file) => fs.unlink(path.join(uploadsFolder, file)))
+    );
   }
 };

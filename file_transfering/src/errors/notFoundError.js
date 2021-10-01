@@ -1,6 +1,6 @@
 module.exports = class NotFoundError extends Error {
-  constructor(message) {
-    super(message);
+  constructor() {
+    super("Files not found");
     this.statusCode = 404;
   }
 };

@@ -8,6 +8,7 @@ const config = {
     host: process.env.APP_HOST,
   },
   db: { host, port, name },
+  uploadsFolder: "uploads",
 };
 
 module.exports = config;

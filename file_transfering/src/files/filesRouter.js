@@ -12,10 +12,6 @@ router.post("/", upload.single("file"), async (req, res, next) => {
   await filesController.create(req, res, next);
 });
 
-router.get("/:id", async (req, res, next) => {
-  await filesController.getOne(req, res, next);
-});
-
 router.delete("/:id", async (req, res, next) => {
   await filesController.deleteOne(req, res, next);
 });
