@@ -13,18 +13,14 @@ module.exports = class FilesService {
   }
 
   async create(file) {
-    try {
-      const { filename, originalname, path, mimetype } = file;
+    const { filename, originalname, path, mimetype } = file;
 
-      return File.create({
-        filename,
-        originalname,
-        mimetype,
-        path,
-      });
-    } catch (error) {
-      throw new Error(error);
-    }
+    return File.create({
+      filename,
+      originalname,
+      mimetype,
+      path,
+    });
   }
 
   async deleteOne(id) {

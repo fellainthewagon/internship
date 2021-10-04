@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const upload = require("../middleware/upload");
+const validateId = require("../middleware/validateId");
 const filesController = require("./filesController");
 
 const router = Router();
@@ -12,7 +13,7 @@ router.post("/", upload.single("file"), async (req, res, next) => {
   await filesController.create(req, res, next);
 });
 
-router.delete("/:id", async (req, res, next) => {
+router.delete("/:id", validateId, async (req, res, next) => {
   await filesController.deleteOne(req, res, next);
 });
 

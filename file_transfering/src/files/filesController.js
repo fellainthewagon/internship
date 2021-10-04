@@ -1,3 +1,4 @@
+const NotFoundError = require("../errors/notFoundError");
 const FilesService = require("./filesService");
 
 class FilesController {
