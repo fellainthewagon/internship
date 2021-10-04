@@ -1,5 +1,6 @@
-const FilesService = require("./filesService");
+/* eslint-disable */
 const { promises: fs } = require("fs");
+const FilesService = require("./filesService");
 
 jest.mock("../models/File.js");
 const File = require("../models/File");

@@ -11,7 +11,7 @@ const dirname = path.resolve();
 
 mongoose
   .connect(`mongodb://${db.host}:${db.port}/${db.name}`)
-  .then(() => console.log("Connected to mongodb"));
+  .then(() => global.console.log("Connected to mongodb"));
 
 app.use(morgan("dev"));
 app.use(express.static(`${dirname}/public`));

@@ -1,7 +1,7 @@
-const File = require("../models/File");
 const { promises: fs } = require("fs");
-const NotFoundError = require("../errors/notFoundError");
 const path = require("path");
+const File = require("../models/File");
+const NotFoundError = require("../errors/notFoundError");
 const { uploadsFolder } = require("../config");
 
 module.exports = class FilesService {

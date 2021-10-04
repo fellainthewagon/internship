@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { deleteCardListener, createCard, showMessage } from "./helpers.js";
 
 const form = document.querySelector(".upload-form");
@@ -9,7 +10,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const response = await fetch("/files");
   const data = await response.json();
 
-  if (response.status === 404) return await showMessage();
+  if (response.status === 404) return showMessage();
 
   let html = "";
   data.forEach((file) => {
@@ -42,6 +43,6 @@ form.addEventListener("submit", async (e) => {
 
 deleteAllFilesBtn.addEventListener("click", async () => {
   const response = await fetch("/files", { method: "DELETE" });
-  if (response.status === 404) return await showMessage();
+  if (response.status === 404) return showMessage();
   container.innerHTML = "";
 });
