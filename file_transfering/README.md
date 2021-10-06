@@ -5,6 +5,8 @@
 1. Run:
 
 ```sh
+cd internship
+npm i
 cd file_transfering
 docker-compose up -d
 ```
