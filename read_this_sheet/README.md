@@ -5,9 +5,7 @@
 Run:
 
 ```sh
-cd internship
-npm i
-cd read_this_sheet
+cd internship/read_this_sheet
 node index
 ```
 
