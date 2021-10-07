@@ -5,9 +5,8 @@
 1. Run:
 
 ```sh
-cd internship
+cd internship/file_transfering
 npm i
-cd file_transfering
 docker-compose up -d
 ```
 
