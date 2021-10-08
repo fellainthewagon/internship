@@ -1,5 +1,5 @@
 const { request } = require("undici");
-const fs = require("fs");
+const { promises: fs, createWriteStream, existsSync } = require("fs");
 const path = require("path");
 
 class NBRB {
@@ -20,8 +20,8 @@ class NBRB {
         .split("T")[0];
       const endDate = new Date().toISOString().split("T")[0];
 
-      if (!fs.existsSync(path.join(__dirname, this.folder)))
-        fs.mkdirSync(path.join(__dirname, this.folder));
+      if (!existsSync(path.join(__dirname, this.folder)))
+        await fs.mkdir(path.join(__dirname, this.folder));
 
       const params = new URLSearchParams({ startDate, endDate });
 
@@ -41,10 +41,10 @@ class NBRB {
   }
 
   async #writeFilesTogether(currencies, params, startDate, endDate) {
-    if (!fs.existsSync(path.join(__dirname, this.folder, this.innerFolder)))
-      fs.mkdirSync(path.join(__dirname, this.folder, this.innerFolder));
+    if (!existsSync(path.join(__dirname, this.folder, this.innerFolder)))
+      await fs.mkdir(path.join(__dirname, this.folder, this.innerFolder));
 
-    const stream = fs.createWriteStream(
+    const stream = createWriteStream(
       path.join(
         __dirname,
         this.folder,
@@ -83,7 +83,7 @@ class NBRB {
         )
         .join("");
 
-      const stream = fs.createWriteStream(
+      const stream = createWriteStream(
         path.join(
           __dirname,
           this.folder,
