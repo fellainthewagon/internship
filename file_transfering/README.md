@@ -1,4 +1,20 @@
-## File Transfering
+# File Transfering
+
+### Usage
+
+1. Run:
+
+```sh
+cd internship/file_transfering
+npm i
+docker-compose up -d
+```
+
+> NOTE: configure the App with your environment variables. Or use `.env.sample` file.
+
+2. Click http://localhost:5000
+
+### Description
 
 Implement the functionality of sending and saving files to the server. It must provide access and download of these files.
 
