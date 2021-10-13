@@ -16,46 +16,50 @@ async function output() {
     endDate: new Date().toISOString().split("T")[0],
   });
 
-  IDs.forEach(async ({ ID, ID_OLD, NAME }) => {
-    const rates = [
-      ...(await request(
-        `https://www.nbrb.by/API/exrates/rates/dynamics/${ID_OLD}?${params}`
-      )),
-      ...(await request(
-        `https://www.nbrb.by/API/exrates/rates/dynamics/${ID}?${params}`
-      )),
-    ];
+  try {
+    IDs.forEach(async ({ ID, ID_OLD, NAME }) => {
+      const rates = [
+        ...(await request(
+          `https://www.nbrb.by/API/exrates/rates/dynamics/${ID_OLD}?${params}`
+        )),
+        ...(await request(
+          `https://www.nbrb.by/API/exrates/rates/dynamics/${ID}?${params}`
+        )),
+      ];
 
-    const stream = createWriteStream(pathOutput + `/BYN_${NAME}_MA30.txt`);
-    stream.write("Date | Course | MA \n" + "____________________\n\n");
+      const stream = createWriteStream(pathOutput + `/BYN_${NAME}_MA30.txt`);
+      stream.write("Date | Course | MA \n" + "____________________\n\n");
 
-    let arrayMA = [];
-    const output = rates.map(({ Date: date, Cur_OfficialRate: course }) => {
-      arrayMA.push(course);
+      let arrayMA = [];
+      const output = rates.map(({ Date: date, Cur_OfficialRate: course }) => {
+        arrayMA.push(course);
 
-      const data = {
-        date: date.split("T")[0],
-        course,
-        movingAverageCourse: "n/a",
-      };
+        const data = {
+          date: date.split("T")[0],
+          course,
+          movingAverageCourse: "n/a",
+        };
 
-      if (arrayMA.length >= MA_DAYS) {
-        data.movingAverageCourse = +(
-          arrayMA.reduce((a, b) => a + b, 0) / MA_DAYS
-        ).toFixed(4);
+        if (arrayMA.length >= MA_DAYS) {
+          data.movingAverageCourse = +(
+            arrayMA.reduce((a, b) => a + b, 0) / MA_DAYS
+          ).toFixed(4);
 
-        arrayMA.shift();
-      }
+          arrayMA.shift();
+        }
 
-      stream.write(
-        data.date + " | " + course + " | " + data.movingAverageCourse + "\n"
-      );
+        stream.write(
+          data.date + " | " + course + " | " + data.movingAverageCourse + "\n"
+        );
 
-      return data;
+        return data;
+      });
+
+      console.log(`\n${NAME}:\n`, output);
     });
-
-    console.log(`\n${NAME}:\n`, output);
-  });
+  } catch (error) {
+    console.error("Something went wrong...\n", error);
+  }
 }
 
 output();
